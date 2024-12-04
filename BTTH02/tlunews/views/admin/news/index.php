@@ -10,7 +10,7 @@
 <div class="container mt-5">
     <h1>Quản lý Tin tức</h1>
     <!-- Nút thêm tin tức -->
-    <a href="add.php" class="btn btn-primary mb-3">Thêm Tin tức</a>
+    <a href="../news/add.php" class="btn btn-primary mb-3">Thêm Tin tức</a>
 
     <!-- Bảng danh sách tin tức -->
     <table class="table table-bordered">
@@ -31,7 +31,7 @@
                 <td><?php echo $news['id']; ?></td>
                 <td><?php echo htmlspecialchars($news['title']); ?></td>
                 <td>
-                    <a href="/BTTH02/tlunews/admin/news/edit/<?php echo $news['id']; ?>" class="btn btn-warning btn-sm">Sửa</a>
+                    <a href="../../admin/news/edit/<?php echo $news['id']; ?>" class="btn btn-warning btn-sm">Sửa</a>
                     <a href="/BTTH02/tlunews/admin/news/delete/<?php echo $news['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa tin tức này?')">Xóa</a>
                 </td>
             </tr>

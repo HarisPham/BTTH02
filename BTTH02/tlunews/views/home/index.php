@@ -26,13 +26,13 @@ $allNews = $news->getAllNews();
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/BTTH02/tlunews/">Trang chủ</a>
+                    <a class="nav-link active" href="../home/index.php">Trang chủ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="admin/news.php">Tin tức</a>
+                    <a class="nav-link" href="../admin/news/index.php">Tin tức</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="./admin/login">Quản trị</a>
+                    <a class="nav-link" href="../admin/login.php">Quản trị</a>
                 </li>
             </ul>
         </div>
