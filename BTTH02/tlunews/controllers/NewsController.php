@@ -10,7 +10,8 @@ class NewsController {
 
     public function index() {
         $newsList = $this->newsModel->getAll();
-        require 'views/admin/news/index.php';
+        require_once './views/admin/news/index.php';
+        return $newsList;
     }
 
     public function add() {
