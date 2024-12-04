@@ -1,16 +1,17 @@
 <?php
-require_once './models/News.php';
+require_once '../models/News.php';
 
 class NewsController {
     private $newsModel;
 
-    public function __construct($db) {
-        $this->newsModel = new News($db);
+    public function __construct() {
+        $this->newsModel = new News();
     }
 
     public function index() {
-        $newsList = $this->newsModel->getAll();
-        require 'views/admin/news/index.php';
+        $newsList = $this->newsModel->getAllNews();
+        require_once '../views/admin/news/index.php';
+        return $newsList;
     }
 
     public function add() {

@@ -1,15 +1,21 @@
 <?php
-require_once './models/User.php';
-require_once './models/News.php';
+require_once '../models/User.php';
+require_once '../models/News.php';
 
 class AdminController {
-    public function index() {
-        header("Location: views/home/index.php");
+    private $userModel;
+
+    public function __construct($db) {
+        $this->userModel = new User($db);
     }
+
     public function login() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $username = $_POST['username'] ?? '';
-            $password = $_POST['password'] ?? '';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $username = trim($_POST['username']);
+            $password = trim($_POST['password']);
+
+            // Lấy thông tin người dùng từ database
+            $user = $this->userModel->findUserByUsername($username);
 
             $user = new User();
             $result = $user->validateLogin($username, $password);

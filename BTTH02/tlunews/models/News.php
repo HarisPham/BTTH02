@@ -1,26 +1,27 @@
 <?php
-require_once './models/Database.php';
+
+require_once __DIR__ . '/../models/Database.php';
 
 class News {
-    public function getAllNews() {
+//    private $db;
+//
+//    public function __construct($db) {
+//        $this->db = $db;
+//    }
+
+//    public function getAll() {
+//        $stmt = $this->db->query("SELECT * FROM news");
+//        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+//    }
+
+    public function getAllNews()
+    {
         $dbConnection = new DBConnection();
         $conn = $dbConnection->getConnection();
-
-        if ($conn === null) {
-            throw new Exception("Kết nối cơ sở dữ liệu thất bại.");
-        }
-
-        try {
-            // Truy vấn tất cả dữ liệu từ bảng news
-            $sql = "SELECT id, title, content, image, created_at, category_id FROM news";
-            $stmt = $conn->prepare($sql);
-            $stmt->execute();
-
-            // Lấy tất cả dữ liệu và trả về
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            throw new Exception("Lỗi khi truy vấn cơ sở dữ liệu: " . $e->getMessage());
-        }
+        $sql = "SELECT * FROM news";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getNewsById($id) {

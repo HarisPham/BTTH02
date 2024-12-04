@@ -4,7 +4,7 @@ class DBConnection {
     private $user;
     private $password;
     private $dbname;
-    private $conn;
+    private $conn = null;
 
     public function __construct() {
         $this->host = 'localhost';
