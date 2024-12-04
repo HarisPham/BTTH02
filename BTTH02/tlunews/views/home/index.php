@@ -21,10 +21,10 @@
                     <a class="nav-link active" href="/BTTH02/tlunews/">Trang chủ</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/BTTH02/tlunews/admin/news">Tin tức</a>
+                    <a class="nav-link" href="admin/news.php">Tin tức</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/BTTH02/tlunews/admin/login">Quản trị</a>
+                    <a class="nav-link" href="./admin/login">Quản trị</a>
                 </li>
             </ul>
         </div>

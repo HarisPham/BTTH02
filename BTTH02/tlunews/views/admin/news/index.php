@@ -1,4 +1,12 @@
 
+<?php
+session_start();
+require_once(__DIR__ . './News.php');
+
+$news = new News();
+$newsList = $news->getAllNews();
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,13 +31,8 @@
         </tr>
         </thead>
         <tbody>
-<!--        --><?php
-//        $newsController = new NewsController('Select * From tintuc');
-        // Gọi hàm index và gán kết quả vào $newsList
-//        $newsList = $newsController->index();
-//        ?>
 
-<?php $newsList = isset($newsList) ? $newsList : []; ?>
+<?php //$newsList = isset($newsList) ? $newsList : []; ?>
 
         <?php foreach ($newsList as $news): ?>
             <tr>
