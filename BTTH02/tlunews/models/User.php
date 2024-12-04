@@ -1,39 +1,60 @@
 <?php
-require_once  './models/Database.php';
-
 class User {
-    public function validateLogin($username, $password) {
-        $dbConnection = new DBConnection();
-        $conn = $dbConnection->getConnection();
+    private $conn;
+    private $db;
+    public function __construct($db) {
+        $this->conn = $db;
+        $this->db = $db;
+    }
 
-        if ($conn === null) {
-            throw new Exception("Kết nối cơ sở dữ liệu thất bại.");
-        }
+    public function findUserByUsername($username) {
+        $sql = "SELECT * FROM users WHERE username = :username";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public function findUserById($id) {
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
 
-        try {
-            // Truy vấn người dùng với username và password
-            $sql = "SELECT id, username, role FROM users WHERE username = :username AND password = :password";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':username', $username);
-            $stmt->bindParam(':password', $password);
-            $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    public function getAllUsers() {
+        $query = "SELECT * FROM users";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-            // Nếu tìm thấy người dùng, kiểm tra vai trò
-            if ($user) {
-                if ($user['role'] == 0) {
-                    return ['success' => true, 'role' => 0];
-                } elseif ($user['role'] == 1) {
-                    return ['success' => true, 'role' => 1];
-                }
-            }
+    // Thêm người dùng
+    public function addUser($username, $password, $role) {
+        $query = "INSERT INTO users (username, password, role) VALUES (:username, :password, :role)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':password', $password); // Mã hóa mật khẩu trước khi lưu
+        $stmt->bindParam(':role', $role);
+        return $stmt->execute();
+    }
 
-            // Trả về false nếu thông tin không chính xác
-            return ['success' => false, 'role' => null];
+    // Sửa người dùng
+    public function updateUser($id, $username, $role) {
+        $query = "UPDATE users SET username = :username, role = :role WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':role', $role);
+        return $stmt->execute();
+    }
 
-        } catch (PDOException $e) {
-            throw new Exception("Lỗi khi truy vấn cơ sở dữ liệu: " . $e->getMessage());
-        }
+    // Xóa người dùng
+    public function deleteUserById($id) {
+        $query = "DELETE FROM users WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
     }
 }
+?>
