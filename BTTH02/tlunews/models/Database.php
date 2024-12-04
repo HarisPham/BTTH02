@@ -1,21 +1,26 @@
 <?php
-class Database {
-    private $host = 'localhost';
-    private $db_name = 'tintuc';
-    private $username = 'root';
-    private $password = '';
+class DBConnection {
+    private $host;
+    private $user;
+    private $password;
+    private $dbname;
     private $conn;
 
-    public function connect() {
+    public function __construct() {
+        $this->host = 'localhost';
+        $this->user = 'root';
+        $this->password = '';
+        $this->dbname = 'tintuc';
+
         try {
-            $this->conn = new PDO("mysql:host={$this->host};dbname={$this->db_name}", $this->username, $this->password);
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->conn = new PDO("mysql:host={$this->host}; dbname={$this->dbname}", $this->user, $this->password);
         } catch (PDOException $e) {
-            echo "Kết nối thất bại: " . $e->getMessage();
-            return null;
+            $this->conn = null;
         }
+    }
+
+    public function getConnection() {
         return $this->conn;
     }
 }
 ?>
-

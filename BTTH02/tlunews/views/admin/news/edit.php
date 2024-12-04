@@ -1,32 +1,48 @@
+<?php
+require_once'./models/News.php';
+$newsItem = $newsEdit;
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sửa Tin tức</title>
-    <!-- Link Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit News</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
-<body class="container">
-<h1 class="mt-4">Sửa Tin tức</h1>
-<form method="POST" action="/BTTH02/tlunews/admin/news/edit/<?php echo $newsItem['id']; ?>" class="mt-3">
-    <div class="mb-3">
-        <label for="title" class="form-label">Tiêu đề:</label>
-        <input type="text" id="title" name="title" class="form-control" value="<?php echo htmlspecialchars($newsItem['title']); ?>" required>
-    </div>
-    <div class="mb-3">
-        <label for="content" class="form-label">Nội dung:</label>
-        <textarea id="content" name="content" class="form-control" rows="5" required><?php echo htmlspecialchars($newsItem['content']); ?></textarea>
-    </div>
-    <div class="mb-3">
-        <label for="image" class="form-label">Đường dẫn ảnh:</label>
-        <input type="text" id="image" name="image" class="form-control" value="<?php echo htmlspecialchars($newsItem['image']); ?>">
-    </div>
-    <div class="mb-3">
-        <label for="category_id" class="form-label">ID Danh mục:</label>
-        <input type="number" id="category_id" name="category_id" class="form-control" value="<?php echo $newsItem['category_id']; ?>" required>
-    </div>
-    <button type="submit" class="btn btn-warning">Cập nhật</button>
-    <a href="/BTTH02/tlunews/admin/news" class="btn btn-secondary">Quay lại</a>
-</form>
+<body>
+<div class="container mt-5">
+    <h3 class="text-center text-success mb-4">Edit News</h3>
+
+    <!-- Form chỉnh sửa tin tức -->
+    <form action="../../../index.php?controller=admin&action=edit&id=<?= $newsItem['id']; ?>" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" value="<?= $newsItem['title']; ?>" required>
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <textarea class="form-control" id="content" name="content" rows="4" required><?= $newsItem['content']; ?></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+        </div>
+        <div class="mb-3">
+            <label for="dateCreated" class="form-label">Date Created</label>
+            <input type="date" class="form-control" id="dateCreated" name="dateCreated" value="<?= $newsItem['created_at']; ?>">
+        </div>
+        <div class="mb-3">
+            <label for="categoryId" class="form-label">Category ID</label>
+            <input type="number" class="form-control" id="categoryId" name="categoryId" value="<?= $newsItem['category_id']; ?>" required>
+        </div>
+        <button type="submit" class="btn btn-success">Update News</button>
+        <a href="/admin/dashboard.php" class="btn btn-danger">Cancel</a>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,36 +1,78 @@
+<?php
+require_once'./models/News.php';
+
+// Kiểm tra nếu có ID trong URL
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+
+    // Tạo đối tượng News và lấy thông tin chi tiết của tin tức
+    $news = new News();
+    $newsDetails = $news->getNewsById($id);
+} else {
+    // Nếu không có ID, chuyển hướng về trang chủ
+    header('Location: index.php');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi Tiết Tin Tức</title>
+    <title>Chi tiết tin tức</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .navbar {
+            margin-bottom: 30px;
+        }
+        .card-img-top {
+            height: 300px;
+            object-fit: cover;
+        }
+        .footer {
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="#">TluNews</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="index.php">Trang Chủ</a></li>
-            </ul>
-        </div>
+        <a class="navbar-brand" href="index.php">Trang chủ</a>
     </div>
 </nav>
 
-<div class="container mt-5">
-    <h1><?= $news['title'] ?></h1>
-    <img src="<?= $news['image'] ?>" class="img-fluid mb-3" alt="<?= $news['title'] ?>">
-    <p><?= $news['content'] ?></p>
-    <a href="index.php" class="btn btn-secondary">Quay lại</a>
-</div>
+<!-- Chi tiết tin tức -->
+<section class="container mt-5">
+    <h2 class="text-center mb-4"><?= $newsDetails['title']; ?></h2>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-sm">
+                <img src="<?= $newsDetails['image']; ?>" class="card-img-top" alt="Hình ảnh tin tức">
+                <div class="card-body">
+                    <p class="card-text"><?= $newsDetails['content']; ?></p>
+                    <p class="text-muted">Ngày đăng: <?= $newsDetails['created_at']; ?></p>
+                    <p class="text-muted">Danh mục ID: <?= $newsDetails['category_id']; ?></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<footer class="bg-dark text-white text-center py-3 mt-5">
-    <p>© 2024 TluNews. All Rights Reserved.</p>
+<!-- Footer -->
+<footer class="footer">
+    <p>&copy; 2024 Trang Tin tức | Designed by Bạn</p>
 </footer>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

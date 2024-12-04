@@ -1,41 +1,79 @@
 <?php
 require_once './models/User.php';
+require_once './models/News.php';
 
 class AdminController {
-    private $userModel;
-
-    public function __construct($db) {
-        $this->userModel = new User($db);
+    public function index() {
+        header("Location: views/home/index.php");
     }
-
     public function login() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = trim($_POST['username']);
-            $password = trim($_POST['password']);
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $username = $_POST['username'] ?? '';
+            $password = $_POST['password'] ?? '';
 
-            // Lấy thông tin người dùng từ database
-            $user = $this->userModel->findUserByUsername($username);
-
-            // Xác thực mật khẩu
-            if ($user && $password === $user['password']) {  // So sánh trực tiếp, không mã hóa
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['role'] = $user['role'];  // Lưu vai trò (0: user, 1: admin)
-
-                // Phân quyền dựa trên role
-                if ($user['role'] == 1) {
-                    header("Location: /BTTH02/tlunews/admin/dashboard");
-                } else {
-                    header("Location: /BTTH02/tlunews/");
+            $user = new User();
+            $result = $user->validateLogin($username, $password);
+            if ($result['success']) {
+                if ($result['role'] == 0) {
+                    header("Location: views/home/index.php");
+                    exit();
+                } elseif ($result['role'] == 1) {
+                    header("Location: views/admin/dashboard.php");
+                    exit();
                 }
-                exit();
             } else {
-                // Lỗi đăng nhập
-                $error = "Tên đăng nhập hoặc mật khẩu không đúng!";
-                require './views/admin/login.php';
+                header("Location: views/admin/login.php");
             }
         } else {
-            // Hiển thị form đăng nhập
-            require './views/admin/login.php';
+            // Nếu là GET, hiển thị trang login
+            header("Location: views/admin/login.php");
         }
     }
+
+    public function add() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $title = $_POST['title'];
+            $content = $_POST['content'];
+            $image = $_POST['image'] ?? '';
+            $dateCreated = $_POST['dateCreated'] ?? '';
+            $categoryId = $_POST['categoryId'] ?? '';
+
+            $news = new News();
+            $news->addNews($title, $content, $image, $dateCreated, $categoryId);
+
+            header("Location: views/admin/dashboard.php");
+            exit();
+        }
+
+        include __DIR__ . '/views/admin/news/add.php';
+    }
+
+    public function edit() {
+        if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) {
+            $id = $_GET['id'];
+            $news = new News();
+            $newsEdit = $news-> getNewsById($id);
+
+            include __DIR__ . '/views/admin/news/edit.php';
+        }
+
+
+    }
+
+    public function delete() {
+        if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) {
+            $id = $_GET['id'];
+
+            $news = new News();
+            $news->deleteNews($id);
+
+            header("Location: views/admin/dashboard.php");
+            exit();
+        }
+        echo "Yêu cầu không hợp lệ.";
+    }
+
+
 }
+
+?>

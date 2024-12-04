@@ -1,26 +1,39 @@
 <?php
+require_once  './models/Database.php';
+
 class User {
-    private $conn;
-    private $table = 'users';
+    public function validateLogin($username, $password) {
+        $dbConnection = new DBConnection();
+        $conn = $dbConnection->getConnection();
 
-    public function __construct($db) {
-        $this->conn = $db;
-    }
-
-    public function findUserByUsername($username) {
-        $query = "SELECT * FROM users WHERE username = :username LIMIT 1";
-
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':username', $username);
-        $stmt->execute();
-
-        // Kiểm tra nếu có dữ liệu và trả về kết quả
-        if ($stmt->rowCount() > 0) {
-            return $stmt->fetch(PDO::FETCH_ASSOC);  // Trả về mảng kết quả
+        if ($conn === null) {
+            throw new Exception("Kết nối cơ sở dữ liệu thất bại.");
         }
 
-        return null;
+        try {
+            // Truy vấn người dùng với username và password
+            $sql = "SELECT id, username, role FROM users WHERE username = :username AND password = :password";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':password', $password);
+            $stmt->execute();
+
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Nếu tìm thấy người dùng, kiểm tra vai trò
+            if ($user) {
+                if ($user['role'] == 0) {
+                    return ['success' => true, 'role' => 0];
+                } elseif ($user['role'] == 1) {
+                    return ['success' => true, 'role' => 1];
+                }
+            }
+
+            // Trả về false nếu thông tin không chính xác
+            return ['success' => false, 'role' => null];
+
+        } catch (PDOException $e) {
+            throw new Exception("Lỗi khi truy vấn cơ sở dữ liệu: " . $e->getMessage());
+        }
     }
 }
-
-?>
