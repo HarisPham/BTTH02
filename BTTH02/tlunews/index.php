@@ -1,7 +1,9 @@
 <?php
-require_once   './controllers/AdminController.php';
-require_once  './controllers/NewsController.php';
-require_once  './controllers/HomeController.php';
+session_start();  // Bắt đầu session nếu chưa có
+
+require_once './controllers/AdminController.php';
+require_once './models/Database.php';
+require_once './controllers/NewsController.php';
 
 $controller = $_GET['controller'] ?? 'index';
 $action = $_GET['action'] ?? 'index';

@@ -1,13 +1,4 @@
 
-<?php
-session_start();
-require_once(__DIR__ . './News.php');
-
-$news = new News();
-$newsList = $news->getAllNews();
-?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +25,8 @@ $newsList = $news->getAllNews();
 
 <?php //$newsList = isset($newsList) ? $newsList : []; ?>
 
-        <?php foreach ($newsList as $news): ?>
+<?php if (isset($allNews) && is_array($allNews)): ?>
+    <?php foreach ($allNews as $news): ?>
             <tr>
                 <td><?php echo $news['id']; ?></td>
                 <td><?php echo htmlspecialchars($news['title']); ?></td>
@@ -44,6 +36,9 @@ $newsList = $news->getAllNews();
                 </td>
             </tr>
         <?php endforeach; ?>
+<?php else: ?>
+    <p class="col-12">Không có tin tức nào!</p>
+<?php endif; ?>
         </tbody>
     </table>
 </div>

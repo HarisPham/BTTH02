@@ -1,3 +1,11 @@
+
+<?php
+session_start();
+require_once(__DIR__ . '/../../models/News.php');
+
+$news = new News();
+$allNews = $news->getAllNews();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,8 +43,8 @@
 <div class="container mt-5">
     <h1 class="mb-4">Danh Sách Tin Tức</h1>
     <div class="row">
-        <?php if (isset($news) && is_array($news)): ?>
-            <?php foreach ($news as $item): ?>
+        <?php if (isset($allNews) && is_array($allNews)): ?>
+            <?php foreach ($allNews as $item): ?>
                 <div class="col-md-4">
                     <div class="card mb-4">
                         <!-- Hiển thị hình ảnh tin tức, nếu có -->
