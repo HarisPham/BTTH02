@@ -52,7 +52,7 @@ $allNews = $news->getAllNews();
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($item['title']) ?></h5>
                             <p class="card-text text-truncate"><?= substr($item['content'], 0, 100) ?>...</p>
-                            <a href="index.php?controller=news&action=detail&id=<?= $item['id'] ?>" class="btn btn-primary">Xem chi tiết</a>
+                            <a href="index.php?controller=tintuc&action=detail&id=<?= $item['id'] ?>" class="btn btn-primary">Xem chi tiết</a>
                         </div>
                     </div>
                 </div>
